@@ -21,13 +21,13 @@ func ToB62(i uint64) (encodedString string) {
 	s := ""
 
 	// Using logarithms, find the exponent of 61 that gives us i. Floor it to find most significant bit
-	mostSignificantBit := math.Floor(math.Log(float64(i)) / math.Log(61.0))
+	mostSignificantBit := math.Floor(math.Log(float64(i)) / math.Log(62.0))
 	var value uint64
 	var multiple uint64
 	// Begin loop, run until we have calculated least significant bit
 	for bit := mostSignificantBit; bit >= 0; bit-- {
 		// The multiple of this bit, calculated by taking 61 to the power of x
-		multiple = uint64(math.Pow(61, bit))
+		multiple = uint64(math.Pow(62, bit))
 
 		// Determine how many times the value of the bit position can wholly go into our remaining number, this quotient is the value of this bit's position
 		value = i / multiple
@@ -57,7 +57,7 @@ func FromB62(b62 string) (decodedNumber uint64, invalidError error) {
 	for index := 0; index < length; index++ {
 		// Check if the rune exists in the alphabet, if it doesn't return an error
 		if valueOfCharacter, ok := runeToNumber[runes[index]]; ok {
-			total += valueOfCharacter * uint64(math.Pow(61.0, float64(index)))
+			total += valueOfCharacter * uint64(math.Pow(62.0, float64(length-index-1)))
 		} else {
 			return 0, fmt.Errorf("Invalid base62 character at index %d", index)
 		}
